@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { JwtService } from './core/auth/services/jwt.service';
 import { UserService } from './core/auth/services/user.service';
@@ -7,6 +7,14 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { EMPTY } from 'rxjs';
 import { routes } from './app.routes';
 import { tokenInterceptor } from './core/interceptor/token.interceptor';
+import { provideNzIcons } from './icons-provider';
+import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { FormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+registerLocaleData(en);
 
 function initAuth(jwtService: JwtService, userService: UserService) {
   return () => {jwtService.getToken() ? userService.getCurrentUser() : EMPTY}
@@ -21,5 +29,5 @@ export const appConfig: ApplicationConfig = {
       useFactory: initAuth,
       deps: [JwtService, UserService],
       multi: true
-    }],
+    }, provideNzIcons(), provideNzI18n(en_US), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient()],
 };

@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 import { AuthService } from './services/auth.service';
-
 @Component({
   selector: 'app-auth',
   standalone: true,
   imports: [
-    CommonModule,ReactiveFormsModule
+    CommonModule,ReactiveFormsModule, DemoNgZorroAntdModule
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
@@ -16,7 +16,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AuthComponent {
 
-  constructor(private readonly authService: AuthService, private readonly router: Router) {
+  constructor(private readonly authService: AuthService, private readonly router: Router, private fb: NonNullableFormBuilder) {
 
   }
   credentialControl = new FormGroup({
@@ -41,4 +41,28 @@ export class AuthComponent {
       }
     )
   }
+
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    password: FormControl<string>;
+    remember: FormControl<boolean>;
+  }> = this.fb.group({
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    remember: [true]
+  });
+
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
 }

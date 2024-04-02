@@ -9,23 +9,29 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NzIconModule, NzLayoutModule, NzMenuModule, ApmModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NzIconModule,
+    NzLayoutModule,
+    NzMenuModule,
+    ApmModule,
+  ],
   providers: [ApmService],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   isCollapsed = false;
   constructor(apmService: ApmService) {
     // Agent API is exposed through this apm instance
-    const apm = apmService.init({
-      serviceName: 'angular-app',
-      serverUrl: 'http://localhost:8200'
-    })
-
-    apm.setUserContext({
-      'username': 'foo',
-      'id': 'bar'
-    })
+    // const apm = apmService.init({
+    //   serviceName: 'angular-app',
+    //   serverUrl: 'http://localhost:8200'
+    // })
+    // apm.setUserContext({
+    //   'username': 'foo',
+    //   'id': 'bar'
+    // })
   }
 }

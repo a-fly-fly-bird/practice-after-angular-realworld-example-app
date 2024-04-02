@@ -8,3 +8,6 @@ NG-ZORRO: [ng-zorro-antd](https://ng.ant.design/components/overview/zh)
 
 Angular 17 Official Docs: [Welcome to Angular World](https://angular.dev)
 
+Prototype and UI/UX Design: [Figma](https://www.figma.com)
+
+

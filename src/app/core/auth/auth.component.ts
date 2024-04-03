@@ -8,12 +8,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterComponent } from '../../pages/register/register.component';
 import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DemoNgZorroAntdModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DemoNgZorroAntdModule,
+    RegisterComponent,
+  ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,8 +28,10 @@ export class AuthComponent {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private fb: NonNullableFormBuilder
+    private fb: NonNullableFormBuilder,
   ) {}
+  isVisible = false;
+  isOkLoading = false;
 
   validateForm: FormGroup<{
     username: FormControl<string>;
@@ -57,5 +65,27 @@ export class AuthComponent {
         }
       });
     }
+  }
+
+  goToReset = () => {};
+
+  register = () => {
+    this.showModal();
+  };
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.isOkLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isOkLoading = false;
+    }, 3000);
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
   }
 }

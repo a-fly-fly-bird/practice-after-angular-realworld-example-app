@@ -21,11 +21,18 @@
         </label>
       </div>
       <div nz-col [nzSpan]="12">
-        <a class="login-form-forgot">Forgot password</a>
+        <a class="login-form-forgot" (click)="goToReset()">Forgot password</a>
       </div>
     </div>
     <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
     Or
-    <a>register now!</a>
+    <a (click)="register()">register now!</a>
   </form>
 </div>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Register" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading">
+  <p *nzModalContent>
+    <app-register></app-register>
+  </p>
+</nz-modal>

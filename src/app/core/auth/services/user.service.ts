@@ -5,10 +5,13 @@ import { User } from '../../model/User';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  constructor(private readonly http: HttpClient, private readonly authService: AuthService) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authService: AuthService,
+  ) {}
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>('/api/user/').pipe(
@@ -18,9 +21,9 @@ export class UserService {
         },
         error: (err) => {
           console.log(err);
-        }
+        },
       }),
-      shareReplay(1)
-    )
+      shareReplay(1),
+    );
   }
 }

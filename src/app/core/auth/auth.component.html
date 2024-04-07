@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center h-screen">
+<div class="flex items-center justify-center" style="height: 75vh">
   <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your username!">
@@ -29,10 +29,3 @@
     <a (click)="register()">register now!</a>
   </form>
 </div>
-
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Register" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-  [nzOkLoading]="isOkLoading">
-  <p *nzModalContent>
-    <app-register></app-register>
-  </p>
-</nz-modal>

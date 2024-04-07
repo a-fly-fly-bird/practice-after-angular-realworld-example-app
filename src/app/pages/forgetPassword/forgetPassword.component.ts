@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { AuthService } from '../../core/auth/services/auth.service';
 import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 @Component({
   selector: 'app-forget-password',
@@ -18,27 +21,50 @@ import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 })
 export class ForgetPasswordComponent {
   validateForm: FormGroup<{
-    userName: FormControl<string>;
+    account: FormControl<string>;
     password: FormControl<string>;
-    remember: FormControl<boolean>;
-  }> = this.fb.group({
-    userName: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-    remember: [true],
-  });
+    confirm: FormControl<string>;
+  }>;
 
   submitForm(): void {
-    if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
-    } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
+    console.log('submit', this.validateForm.value);
+    this.authService
+      .reset({
+        ...(this.validateForm.value as { account: string; password: string }),
+      })
+      .subscribe((data) => {
+        console.log(data);
       });
-    }
   }
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  resetForm(e: MouseEvent): void {
+    e.preventDefault();
+    this.validateForm.reset();
+  }
+
+  validateConfirmPassword(): void {
+    setTimeout(() =>
+      this.validateForm.controls.confirm.updateValueAndValidity(),
+    );
+  }
+
+  confirmValidator: ValidatorFn = (control: AbstractControl) => {
+    if (!control.value) {
+      return { error: true, required: true };
+    } else if (control.value !== this.validateForm.controls.password.value) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  };
+
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private authService: AuthService,
+  ) {
+    this.validateForm = this.fb.group({
+      account: ['', [Validators.email, Validators.required]],
+      password: ['', [Validators.required]],
+      confirm: ['', [this.confirmValidator]],
+    });
+  }
 }

@@ -32,4 +32,17 @@ export class AuthService {
     this.jwtService.saveToken(user.token);
     this.currentUserSubject.next(user);
   }
+
+  register(info: {
+    name: string;
+    password: string;
+    email: string;
+    age: number;
+  }): Observable<String> {
+    return this.http.post<String>('/api/auth/register', info);
+  }
+
+  reset(info: { account: string; password: string }): Observable<typeof info> {
+    return this.http.put<typeof info>('/api/auth/reset', info);
+  }
 }

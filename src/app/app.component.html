@@ -1,9 +1,14 @@
-<nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" [nzSimple]="false">
-
+@if (isSpinning) {
+<nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" [nzSimple]="false" class="h-full w-full">
 </nz-spin>
-
-<div class="min-h-full flex flex-col">
-  <app-header></app-header>
-  <router-outlet class="grow"></router-outlet>
-  <app-footer></app-footer>
+}
+@else {
+<div class="min-h-screen relative">
+  <!-- https://www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/ -->
+  <div class="pb-10">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="absolute bottom-0 h-10 w-full"></app-footer>
 </div>
+}

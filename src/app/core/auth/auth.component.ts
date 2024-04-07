@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ViewContainerRef,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +12,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ForgetPasswordComponent } from '../../pages/forgetPassword/forgetPassword.component';
 import { RegisterComponent } from '../../pages/register/register.component';
 import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 import { AuthService } from './services/auth.service';
@@ -19,6 +25,7 @@ import { AuthService } from './services/auth.service';
     ReactiveFormsModule,
     DemoNgZorroAntdModule,
     RegisterComponent,
+    ForgetPasswordComponent,
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
@@ -29,6 +36,8 @@ export class AuthComponent {
     private readonly authService: AuthService,
     private readonly router: Router,
     private fb: NonNullableFormBuilder,
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef,
   ) {}
   isVisible = false;
   isOkLoading = false;
@@ -67,25 +76,33 @@ export class AuthComponent {
     }
   }
 
-  goToReset = () => {};
-
-  register = () => {
-    this.showModal();
+  goToReset = () => {
+    this.modal.create({
+      nzContent: ForgetPasswordComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: [
+        {
+          label: 'Cancel',
+          onClick: (componentInstance) => {
+            this.modal.closeAll();
+          },
+        },
+      ],
+    });
   };
 
-  showModal(): void {
-    this.isVisible = true;
-  }
-
-  handleOk(): void {
-    this.isOkLoading = true;
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isOkLoading = false;
-    }, 3000);
-  }
-
-  handleCancel(): void {
-    this.isVisible = false;
-  }
+  register = () => {
+    this.modal.create({
+      nzContent: RegisterComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: [
+        {
+          label: 'Cancel',
+          onClick: (componentInstance) => {
+            this.modal.closeAll();
+          },
+        },
+      ],
+    });
+  };
 }

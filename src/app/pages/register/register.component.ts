@@ -9,7 +9,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
+import { AuthService } from '../../core/auth/services/auth.service';
 import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 
 @Component({
@@ -25,21 +25,36 @@ export class RegisterComponent {
     email: FormControl<string>;
     password: FormControl<string>;
     checkPassword: FormControl<string>;
-    nickname: FormControl<string>;
-    phoneNumberPrefix: FormControl<'+86' | '+87'>;
-    phoneNumber: FormControl<string>;
-    website: FormControl<string>;
-    captcha: FormControl<string>;
-    agree: FormControl<boolean>;
+    name: FormControl<string>;
+    age: FormControl<number>;
   }>;
-  captchaTooltipIcon: NzFormTooltipIcon = {
-    type: 'info-circle',
-    theme: 'twotone',
-  };
+
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private authService: AuthService,
+  ) {
+    this.validateForm = this.fb.group({
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', [Validators.required]],
+      checkPassword: ['', [Validators.required, this.confirmationValidator]],
+      name: ['', [Validators.required]],
+      age: [0, [Validators.required, Validators.min(0), Validators.max(200)]],
+    });
+  }
 
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
+      this.authService
+        .register({
+          ...(this.validateForm.value as {
+            name: string;
+            password: string;
+            email: string;
+            age: number;
+          }),
+        })
+        .subscribe((data) => console.log(data));
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -67,22 +82,4 @@ export class RegisterComponent {
     }
     return {};
   };
-
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
-  }
-
-  constructor(private fb: NonNullableFormBuilder) {
-    this.validateForm = this.fb.group({
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
-      checkPassword: ['', [Validators.required, this.confirmationValidator]],
-      nickname: ['', [Validators.required]],
-      phoneNumberPrefix: '+86' as '+86' | '+87',
-      phoneNumber: ['', [Validators.required]],
-      website: ['', [Validators.required]],
-      captcha: ['', [Validators.required]],
-      agree: [false],
-    });
-  }
 }

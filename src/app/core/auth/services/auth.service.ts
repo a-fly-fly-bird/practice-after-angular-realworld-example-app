@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import {
+  Injectable,
+  Signal,
+  WritableSignal,
+  computed,
+  signal,
+} from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { User } from '../../model/User';
 import { JwtService } from './jwt.service';
 
@@ -8,7 +14,12 @@ import { JwtService } from './jwt.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  currentUser: WritableSignal<User | null> = signal(null);
+  isAuthenticated: Signal<boolean> = computed(() => {
+    console.log('this.currentUser()', this.currentUser());
+    console.log('!!this.currentUser()', !!this.currentUser());
+    return !!this.currentUser();
+  });
 
   constructor(
     private readonly http: HttpClient,
@@ -29,8 +40,11 @@ export class AuthService {
 
   // 最终都会调用这个方法来保存用户数据
   setAuth(user: User) {
-    this.jwtService.saveToken(user.token);
-    this.currentUserSubject.next(user);
+    if (user.token) {
+      this.jwtService.saveToken(user.token);
+      console.info('user', user);
+      this.currentUser.set(user);
+    }
   }
 
   register(info: {

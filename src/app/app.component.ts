@@ -23,15 +23,4 @@ import { DemoNgZorroAntdModule } from './ng-zorro-antd.module';
 export class AppComponent {
   isCollapsed = false;
   isSpinning = false;
-  constructor(apmService: ApmService) {
-    // Agent API is exposed through this apm instance
-    // const apm = apmService.init({
-    //   serviceName: 'angular-app',
-    //   serverUrl: 'http://localhost:8200'
-    // })
-    // apm.setUserContext({
-    //   'username': 'foo',
-    //   'id': 'bar'
-    // })
-  }
 }

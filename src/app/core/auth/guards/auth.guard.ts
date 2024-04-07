@@ -1,13 +1,9 @@
 import { inject } from '@angular/core';
-import { Router, type CanActivateFn } from '@angular/router';
-import { JwtService } from './../services/jwt.service';
+import { type CanActivateFn } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const token = inject(JwtService).getToken();
-  if (token !== "") {
-    return true;
-  } else {
-    inject(Router).navigate(['auth'])
-    return false;
-  }
+  const isAuthenticated = inject(AuthService).isAuthenticated();
+  console.log('isAuthenticated', isAuthenticated);
+  return isAuthenticated;
 };

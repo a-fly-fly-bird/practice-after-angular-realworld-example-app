@@ -1,9 +1,10 @@
-import { Role } from "./Role";
+import { Role } from './Role';
 
 export interface User {
   email: string;
-  username: string;
+  name: string;
   token: string;
   age: string;
+  isDeleted: boolean;
   role?: Role[];
 }

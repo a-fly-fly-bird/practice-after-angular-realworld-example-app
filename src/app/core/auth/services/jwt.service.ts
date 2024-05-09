@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
 
-const JWT_KEY = "jwtToken";
+const JWT_KEY = 'jwtToken';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JwtService {
-
-  constructor() { }
+  constructor() {}
 
   getToken(): string {
-    return window.localStorage.getItem(JWT_KEY)??"";
+    return window.localStorage.getItem(JWT_KEY) ?? '';
   }
 
-  saveToken(token: string): string{
+  saveToken(token: string): string {
     window.localStorage.setItem(JWT_KEY, token);
     return token;
   }
 
-  destroyToken(): void{
+  destroyToken(): void {
     window.localStorage.removeItem(JWT_KEY);
   }
 }

@@ -19,7 +19,7 @@ export class UserService {
     console.info('start');
     return this.http.get<User>('/api/user/').pipe(
       // https://medium.com/@nile.bits/angular-observable-error-handling-best-practices-938982478513
-      catchError((error: any) => {
+      catchError((error: Error) => {
         // Handle the error here
         console.error('An error occurred:', error);
         // Optionally, re-throw the error or return a default value

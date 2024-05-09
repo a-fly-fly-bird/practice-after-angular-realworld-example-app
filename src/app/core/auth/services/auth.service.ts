@@ -52,8 +52,8 @@ export class AuthService {
     password: string;
     email: string;
     age: number;
-  }): Observable<String> {
-    return this.http.post<String>('/api/auth/register', info);
+  }): Observable<string> {
+    return this.http.post<string>('/api/auth/register', info);
   }
 
   reset(info: { account: string; password: string }): Observable<typeof info> {

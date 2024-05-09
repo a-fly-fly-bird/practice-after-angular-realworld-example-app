@@ -83,7 +83,7 @@ export class AuthComponent {
       nzFooter: [
         {
           label: 'Cancel',
-          onClick: (componentInstance) => {
+          onClick: () => {
             this.modal.closeAll();
           },
         },
@@ -98,7 +98,7 @@ export class AuthComponent {
       nzFooter: [
         {
           label: 'Cancel',
-          onClick: (componentInstance) => {
+          onClick: () => {
             this.modal.closeAll();
           },
         },

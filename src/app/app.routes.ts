@@ -11,7 +11,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () =>
-      import('./feature/home/home.component').then((m) => m.HomeComponent),
+      import('./feature/home/home.component').then(m => m.HomeComponent),
     canActivate: [
       () =>
         inject(AuthService).isAuthenticated()
@@ -22,7 +22,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadComponent: () =>
-      import('./core/auth/auth.component').then((m) => m.AuthComponent),
+      import('./core/auth/auth.component').then(m => m.AuthComponent),
     canActivate: [() => !inject(AuthService).isAuthenticated()],
   },
 ];

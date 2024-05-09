@@ -12,7 +12,7 @@ export class UserService {
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   getCurrentUser(): Observable<User> {
@@ -31,12 +31,12 @@ export class UserService {
           this.authService.setAuth(user);
         },
         // This block will only execute if catchError is used
-        error: (err) => {
+        error: err => {
           console.log('err', err);
           this.router.navigate(['/auth']);
         },
       }),
-      shareReplay(1),
+      shareReplay(1)
     );
   }
 
@@ -44,7 +44,7 @@ export class UserService {
     return this.http.put<{ user: User }>('/api/user', { user }).pipe(
       tap(({ user }) => {
         this.authService.currentUser.set(user);
-      }),
+      })
     );
   }
 }

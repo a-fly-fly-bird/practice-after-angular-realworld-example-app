@@ -31,7 +31,7 @@ export class RegisterComponent {
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     this.validateForm = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
@@ -54,9 +54,9 @@ export class RegisterComponent {
             age: number;
           }),
         })
-        .subscribe((data) => console.log(data));
+        .subscribe(data => console.log(data));
     } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
+      Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -68,12 +68,12 @@ export class RegisterComponent {
   updateConfirmValidator(): void {
     /** wait for refresh value */
     Promise.resolve().then(() =>
-      this.validateForm.controls.checkPassword.updateValueAndValidity(),
+      this.validateForm.controls.checkPassword.updateValueAndValidity()
     );
   }
 
   confirmationValidator: ValidatorFn = (
-    control: AbstractControl,
+    control: AbstractControl
   ): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };

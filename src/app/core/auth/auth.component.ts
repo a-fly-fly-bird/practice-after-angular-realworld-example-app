@@ -37,7 +37,7 @@ export class AuthComponent {
     private readonly router: Router,
     private fb: NonNullableFormBuilder,
     private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef,
+    private viewContainerRef: ViewContainerRef
   ) {}
   isVisible = false;
   isOkLoading = false;
@@ -62,12 +62,12 @@ export class AuthComponent {
         })
         .subscribe({
           next: () => this.router.navigate(['/home']),
-          error: (err) => {
+          error: err => {
             console.log(err);
           },
         });
     } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
+      Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });

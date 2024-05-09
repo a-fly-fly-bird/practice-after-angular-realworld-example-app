@@ -32,7 +32,7 @@ export class ForgetPasswordComponent {
       .reset({
         ...(this.validateForm.value as { account: string; password: string }),
       })
-      .subscribe((data) => {
+      .subscribe(data => {
         console.log(data);
       });
   }
@@ -44,7 +44,7 @@ export class ForgetPasswordComponent {
 
   validateConfirmPassword(): void {
     setTimeout(() =>
-      this.validateForm.controls.confirm.updateValueAndValidity(),
+      this.validateForm.controls.confirm.updateValueAndValidity()
     );
   }
 
@@ -59,7 +59,7 @@ export class ForgetPasswordComponent {
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     this.validateForm = this.fb.group({
       account: ['', [Validators.email, Validators.required]],

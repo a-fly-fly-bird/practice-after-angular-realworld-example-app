@@ -1,16 +1,28 @@
 <div class="flex items-center justify-center" style="height: 75vh">
-  <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+  <form
+    nz-form
+    [formGroup]="validateForm"
+    class="login-form"
+    (ngSubmit)="submitForm()">
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your username!">
         <nz-input-group nzPrefixIcon="user">
-          <input type="text" nz-input formControlName="username" placeholder="Username" />
+          <input
+            type="text"
+            nz-input
+            formControlName="username"
+            placeholder="Username" />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your Password!">
         <nz-input-group nzPrefixIcon="lock">
-          <input type="password" nz-input formControlName="password" placeholder="Password" />
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password" />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
@@ -24,8 +36,22 @@
         <a class="login-form-forgot" (click)="goToReset()">Forgot password</a>
       </div>
     </div>
-    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-    Or
-    <a (click)="register()">register now!</a>
+    <div class="flex flex-col">
+      <button
+        nz-button
+        class="login-form-button login-form-margin"
+        [nzType]="'primary'">
+        Log in
+      </button>
+      <div class="flex justify-between items-center">
+        <div>or</div>
+        <div>
+          <button nz-button nzType="primary" (click)="register()">
+            <span nz-icon nzType="search"></span>
+            register now!
+          </button>
+        </div>
+      </div>
+    </div>
   </form>
 </div>

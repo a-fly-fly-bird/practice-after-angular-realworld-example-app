@@ -95,6 +95,7 @@ export class AuthComponent {
     this.modal.create({
       nzContent: RegisterComponent,
       nzViewContainerRef: this.viewContainerRef,
+      nzWidth: 800,
       nzFooter: [
         {
           label: 'Cancel',

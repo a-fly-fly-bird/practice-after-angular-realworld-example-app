@@ -16,23 +16,18 @@ export class UserService {
   ) {}
 
   getCurrentUser(): Observable<User> {
-    console.info('start');
     return this.http.get<User>('/api/user/').pipe(
       // https://medium.com/@nile.bits/angular-observable-error-handling-best-practices-938982478513
       catchError((error: Error) => {
-        // Handle the error here
-        console.error('An error occurred:', error);
         // Optionally, re-throw the error or return a default value
-        return throwError('Something went wrong');
+        return throwError(error);
       }),
       tap({
         next: (user: User) => {
-          console.log('getCurrentUser', user);
           this.authService.setAuth(user);
         },
         // This block will only execute if catchError is used
         error: err => {
-          console.log('err', err);
           this.router.navigate(['/auth']);
         },
       }),

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -11,11 +11,22 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/auth/services/auth.service';
 import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
+import { Router } from '@angular/router';
+import {
+  NzNotificationModule,
+  NzNotificationService,
+} from 'ng-zorro-antd/notification';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, DemoNgZorroAntdModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    DemoNgZorroAntdModule,
+    ReactiveFormsModule,
+    NzNotificationModule,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +42,9 @@ export class RegisterComponent {
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private notification: NzNotificationService,
+    private modalService: NzModalService
   ) {
     this.validateForm = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
@@ -54,7 +67,15 @@ export class RegisterComponent {
             age: number;
           }),
         })
-        .subscribe(data => console.log(data));
+        .subscribe({
+          next: data => {
+            this.createNotification('info', '注册成功');
+            this.modalService.closeAll();
+          },
+          error: err => {
+            this.createNotification('error', err);
+          },
+        });
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -82,4 +103,8 @@ export class RegisterComponent {
     }
     return {};
   };
+
+  createNotification(type: string, msg: string): void {
+    this.notification.create(type, type, msg);
+  }
 }

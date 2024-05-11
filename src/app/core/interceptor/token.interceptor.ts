@@ -9,7 +9,8 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   // 克隆请求并设置新的头部
   const authReq = req.clone({
     headers: token
-      ? req.headers.set('Authorization', `Bearer ${token}`)
+      ? // Sets or modifies a value for a given header in a clone of the original instance. If the header already exists, its value is replaced with the given value in the returned object.
+        req.headers.set('Authorization', `Bearer ${token}`)
       : req.headers,
   });
 

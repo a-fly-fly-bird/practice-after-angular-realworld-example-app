@@ -21,7 +21,12 @@ import { provideNzIcons } from './icons-provider';
 registerLocaleData(en);
 
 function initAuth(jwtService: JwtService, userService: UserService) {
-  return () => (jwtService.getToken() ? userService.getCurrentUser() : EMPTY);
+  return () => (
+    jwtService.getToken()
+    ?
+    userService.getCurrentUser()
+      : EMPTY
+  );
 }
 
 export const appConfig: ApplicationConfig = {

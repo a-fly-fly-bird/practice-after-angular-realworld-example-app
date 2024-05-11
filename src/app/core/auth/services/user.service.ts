@@ -16,7 +16,7 @@ export class UserService {
   ) {}
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>('/api/user/').pipe(
+    return this.http.get<User>('/api/user/current').pipe(
       // https://medium.com/@nile.bits/angular-observable-error-handling-best-practices-938982478513
       catchError((error: Error) => {
         // Optionally, re-throw the error or return a default value

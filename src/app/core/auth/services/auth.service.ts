@@ -6,7 +6,7 @@ import {
   computed,
   signal,
 } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { User } from '../../model/User';
 import { JwtService } from './jwt.service';
 import { Result } from '../../model/Result';
@@ -27,14 +27,24 @@ export class AuthService {
 
   // TypeScript 只在编译期执行静态类型检查！实际运行的是从 TypeScript 编译的 JavaScript，这些生成的 JavaScript 对类型一无所知。编译期静态类型检查在代码库内部能发挥很大作用，但对不合规范的输入（比如，从 API 处接收的输入）无能为力。
   login(credentials: { account: string; password: string }): Observable<User> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.http.post<any>('/api/auth/login', { ...credentials }).pipe(
-      map(data => data.data),
+      map(data => {
+        if (data.data) {
+          return data.data; // 返回数据
+        } else {
+          throw new Error(data); // 抛出错误以便被 catchError 捕获
+        }
+      }),
       tap({
         next: (user: User) => {
           // 登录成功后保存Token到localStorage
           this.setAuth(user);
         },
+      }),
+      catchError((err: Error) => {
+        console.error('Error caught in catchError:', err);
+        // 这里可以返回一个处理后的错误，或者仍然抛出错误
+        return throwError(() => err);
       })
     );
   }

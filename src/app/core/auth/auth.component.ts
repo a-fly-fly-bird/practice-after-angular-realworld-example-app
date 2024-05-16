@@ -17,6 +17,8 @@ import { ForgetPasswordComponent } from '../../pages/forgetPassword/forgetPasswo
 import { RegisterComponent } from '../../pages/register/register.component';
 import { DemoNgZorroAntdModule } from './../../ng-zorro-antd.module';
 import { AuthService } from './services/auth.service';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { LoginFailedComponent } from '../../pages/loginFailed/loginFailed.component';
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -26,6 +28,7 @@ import { AuthService } from './services/auth.service';
     DemoNgZorroAntdModule,
     RegisterComponent,
     ForgetPasswordComponent,
+    NzResultModule,
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
@@ -64,6 +67,19 @@ export class AuthComponent {
           next: () => this.router.navigate(['/home']),
           error: err => {
             console.log(err);
+            this.modal.create({
+              nzContent: LoginFailedComponent,
+              nzViewContainerRef: this.viewContainerRef,
+              nzCentered: true,
+              nzFooter: [
+                {
+                  label: 'Cancel',
+                  onClick: () => {
+                    this.modal.closeAll();
+                  },
+                },
+              ],
+            });
           },
         });
     } else {
